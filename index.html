@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        select,
+        input,
+        button {
+            margin: 10px;
+            padding: 5px;
+        }
+
+        #risultato {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Convertitore di Valuta</h1>
+    <input type="number" id="importo" name="importo" placeholder="Inserisci importo">
+    <select id="daValuta">
+        <option value="SEL">Valuta di partenza</option>
+        <!-- valute da convertire-->
+        <option value="JPY">Yen giapponese</option>
+        <option value="EUR">Euro</option>
+        <option value="USD">Dollaro USA</option>
+        <option value="GBP">Sterlina britannica</option>
+        <!-- ///////////////////////////////////////////////// -->
+    </select>
+    <select id="aValuta">
+        <option value="SEL">Valuta di destinazione</option>
+        <!-- valute da convertire-->
+        <option value="JPY">Yen giapponese</option>
+        <option value="EUR">Euro</option>
+        <option value="USD">Dollaro USA</option>
+        <option value="GBP">Sterlina britannica</option>
+        <!--/////////////////////////////////////////////////-->
+    </select>
+<!-- button start-->
+    <input type="button" id="converti" name="converti" value="Converti"></button>
+
+    <input type="reset" id="resetta" name="Resetta" value="Reset"></button>
+<!-- button finish-->
+    <p id="risultato"></p>
+    <script>
+        let ConvertitoreValuta = {
+            tassiDiCambio: {
+                EUR: 1.00, // Euro
+                USD: 1.06,   // Dollaro USA
+                GBP: 0.87, // Sterlina britannica
+                JPY: 158.5  // Yen giapponese
+                // Aggiungi altri tassi di cambio secondo le tue esigenze
+            },
+            converti: function (imp, daVal, aVal) {
+                let tassoDa = ConvertitoreValuta.tassiDiCambio[daVal];
+                let tassoA = ConvertitoreValuta.tassiDiCambio[aVal];
+                let importoConvertito = imp * (tassoA / tassoDa);
+                document.getElementById("risultato").textContent = imp + " " + daVal + " equivale a " + importoConvertito.toFixed(2) + " " + aVal;
+            }
+        };
+        // Gestisci evento click pulsante converti
+        document.getElementById("converti").addEventListener("click", function () {
+            
+            let importo = parseFloat(document.getElementById("importo").value);
+            let daValuta = document.getElementById("daValuta").value;
+            let aValuta = document.getElementById("aValuta").value;
+            
+
+
+            if (isNaN(importo) || importo <= 0) {
+                document.getElementById("risultato").innerHTML = "Inserisci un importo valido maggiore di zero.";
+            } else if (daValuta == "SEL" || aValuta == "SEL") {// Controllo di validazione delle select
+                document.getElementById("risultato").innerHTML = "Seleziona valuta di partenza e di destinazione.";
+
+            } else {
+                ConvertitoreValuta.converti(importo, daValuta, aValuta);
+            }
+
+
+        });
+        document.getElementById("resetta").addEventListener("click", function () {
+            document.getElementById("daValuta").value = "SEL"
+            document.getElementById("aValuta").value = "SEL"
+            document.getElementById("importo").value = "";
+            document.getElementById("risultato").innerHTML = "";
+        });
+    </script>
+</body>
+
+</html>
